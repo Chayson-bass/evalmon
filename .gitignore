@@ -1,0 +1,32 @@
+# API keys and secrets — NEVER upload these
+.env
+*.env
+.env.local
+
+# Python cache files — auto-generated, not needed on GitHub
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Package build files
+dist/
+build/
+*.egg-info/
+
+# Test cache
+.pytest_cache/
+
+# Database — contains your real call logs, keep private
+*.db
+*.sqlite
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+.venv/
+env/
