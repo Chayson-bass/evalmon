@@ -48,16 +48,16 @@ def alert_on_regression(
 ) -> list[dict]:
     """
     Check for regressions and fire Slack / email alerts for any that are found.
-    Reads SIMPEVAL_SLACK_WEBHOOK and SIMPEVAL_ALERT_EMAIL from env if not passed directly.
+    Reads EVALMON_SLACK_WEBHOOK and EVALMON_ALERT_EMAIL from env if not passed directly.
     """
-    slack_webhook = slack_webhook or os.environ.get("SIMPEVAL_SLACK_WEBHOOK")
-    email = email or os.environ.get("SIMPEVAL_ALERT_EMAIL")
+    slack_webhook = slack_webhook or os.environ.get("EVALMON_SLACK_WEBHOOK")
+    email = email or os.environ.get("EVALMON_ALERT_EMAIL")
 
     failing = check_regression(threshold=threshold, lookback_hours=lookback_hours)
     if not failing:
         return []
 
-    lines = [f"simpeval regression alert — {len(failing)} eval(s) below {threshold:.0%}:\n"]
+    lines = [f"evalmon regression alert — {len(failing)} eval(s) below {threshold:.0%}:\n"]
     for f in failing:
         lines.append(
             f"  • {f['eval_name']}: {f['pass_rate']:.1%} pass rate "
@@ -68,7 +68,7 @@ def alert_on_regression(
     if slack_webhook:
         _slack(slack_webhook, message)
     if email:
-        _email(email, "simpeval: eval regression detected", message)
+        _email(email, "evalmon: eval regression detected", message)
 
     return failing
 
@@ -97,12 +97,12 @@ def _email(
     smtp_user: str | None = None,
     smtp_password: str | None = None,
 ) -> bool:
-    host = smtp_host     or os.environ.get("SIMPEVAL_SMTP_HOST", "")
-    user = smtp_user     or os.environ.get("SIMPEVAL_SMTP_USER", "")
-    pw   = smtp_password or os.environ.get("SIMPEVAL_SMTP_PASSWORD", "")
+    host = smtp_host     or os.environ.get("EVALMON_SMTP_HOST", "")
+    user = smtp_user     or os.environ.get("EVALMON_SMTP_USER", "")
+    pw   = smtp_password or os.environ.get("EVALMON_SMTP_PASSWORD", "")
 
     if not (host and user and pw):
-        print("Email skipped: SIMPEVAL_SMTP_HOST / USER / PASSWORD not configured.")
+        print("Email skipped: EVALMON_SMTP_HOST / USER / PASSWORD not configured.")
         return False
 
     msg = MIMEText(body)

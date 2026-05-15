@@ -54,7 +54,7 @@ def run_evals(
     if eval_names:
         evals = [e for e in evals if e["name"] in eval_names]
     if not evals:
-        print("No evals defined. Create one with simpeval.create_eval().")
+        print("No evals defined. Create one with evalmon.create_eval().")
         return []
 
     calls = (
@@ -94,7 +94,7 @@ def run_evals(
 def compare_versions(version_a: str, version_b: str) -> dict:
     """
     Compare eval pass rates between two prompt versions.
-    Tag calls with simpeval.set_context(prompt_version="v2") before making them.
+    Tag calls with evalmon.set_context(prompt_version="v2") before making them.
     """
     all_calls = get_calls(limit=10_000)
     ids_a = {c["id"] for c in all_calls if c.get("prompt_version") == version_a}

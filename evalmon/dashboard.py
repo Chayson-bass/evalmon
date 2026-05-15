@@ -2,22 +2,22 @@ import json
 import sys
 from pathlib import Path
 
-# Importable whether run via `simpeval dashboard` or `streamlit run dashboard.py`
+# Importable whether run via `evalmon dashboard` or `streamlit run dashboard.py`
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-import simpeval
-from simpeval.evals import create_eval, delete_eval, run_evals
-from simpeval.storage import get_calls, get_eval_results, get_evals, init_db
+import evalmon
+from evalmon.evals import create_eval, delete_eval, run_evals
+from evalmon.storage import get_calls, get_eval_results, get_evals, init_db
 
-st.set_page_config(page_title="simpeval", page_icon="🔍", layout="wide")
+st.set_page_config(page_title="evalmon", page_icon="🔍", layout="wide")
 
 # ── Header ─────────────────────────────────────────────────────────────────────
-st.title("simpeval")
-st.caption(f"DB: `{simpeval.get_db_path()}`")
+st.title("evalmon")
+st.caption(f"DB: `{evalmon.get_db_path()}`")
 
 init_db()
 
@@ -71,9 +71,9 @@ with tab_log:
         st.info(
             "No calls logged yet.\n\n"
             "```python\n"
-            "import simpeval\n"
+            "import evalmon\n"
             "from anthropic import Anthropic\n\n"
-            "client = simpeval.wrap(Anthropic())\n"
+            "client = evalmon.wrap(Anthropic())\n"
             "# All calls now auto-logged\n"
             "```"
         )

@@ -1,8 +1,8 @@
-# simpeval
+# evalmon
 
 **Know when your AI product breaks — before your users do.**
 
-simpeval logs every LLM call your app makes, lets you write quality checks in plain English, and alerts you the moment your product starts degrading. Two lines of code. Works with OpenAI and Anthropic. Free to start.
+evalmon logs every LLM call your app makes, lets you write quality checks in plain English, and alerts you the moment your product starts degrading. Two lines of code. Works with OpenAI and Anthropic. Free to start.
 
 ---
 
@@ -10,14 +10,14 @@ simpeval logs every LLM call your app makes, lets you write quality checks in pl
 
 You built an AI product. Users are paying. But every time you change a prompt, you have no idea if it got better or worse. When something breaks, your customer finds out before you do.
 
-simpeval fixes that.
+evalmon fixes that.
 
 ---
 
 ## Install
 
 ```bash
-pip install simpeval
+pip install evalmon
 ```
 
 ---
@@ -27,14 +27,14 @@ pip install simpeval
 Add **one line** to your existing code. Everything else stays exactly the same.
 
 ```python
-import simpeval
+import evalmon
 from anthropic import Anthropic
 
 # Before
 client = Anthropic()
 
 # After — one line change, everything else identical
-client = simpeval.wrap(Anthropic())
+client = evalmon.wrap(Anthropic())
 
 # Your existing code unchanged
 response = client.messages.create(
@@ -50,7 +50,7 @@ Works the same way with OpenAI:
 
 ```python
 from openai import OpenAI
-client = simpeval.wrap(OpenAI())
+client = evalmon.wrap(OpenAI())
 ```
 
 ---
@@ -60,12 +60,12 @@ client = simpeval.wrap(OpenAI())
 See all your logged calls, cost charts, and eval results in one place:
 
 ```bash
-simpeval dashboard
+evalmon dashboard
 ```
 
 Opens in your browser at `http://localhost:8501`
 
-![simpeval dashboard showing call log, cost charts, and eval results]
+![evalmon dashboard showing call log, cost charts, and eval results]
 
 ---
 
@@ -75,13 +75,13 @@ Define what "good" looks like for your product. No code required.
 
 ```python
 # Create an eval once
-simpeval.create_eval(
+evalmon.create_eval(
     name="always_professional",
     criterion="The response must be professional and helpful. Never rude or dismissive."
 )
 
 # Run it against your last 50 calls
-simpeval.run_evals(last_n=50)
+evalmon.run_evals(last_n=50)
 ```
 
 Claude reads each call and scores it against your criterion. You see exactly which calls passed, which failed, and why.
@@ -94,10 +94,10 @@ Tag your calls so you can compare prompt versions side by side:
 
 ```python
 # Tag all calls with the current prompt version
-simpeval.set_context(prompt_version="v2", user_id="user_123")
+evalmon.set_context(prompt_version="v2", user_id="user_123")
 
 # After running evals on both versions, compare them
-simpeval.compare_versions("v1", "v2")
+evalmon.compare_versions("v1", "v2")
 ```
 
 ---
@@ -109,7 +109,7 @@ Get notified automatically when your eval pass rate drops:
 ```python
 # Check if anything regressed in the last 24 hours
 # Fires a Slack message if pass rate drops below 80%
-simpeval.alert_on_regression(
+evalmon.alert_on_regression(
     threshold=0.8,
     lookback_hours=24,
     slack_webhook="https://hooks.slack.com/services/..."
@@ -119,7 +119,7 @@ simpeval.alert_on_regression(
 Or run it from the terminal on a schedule:
 
 ```bash
-simpeval check-alerts --threshold 0.8 --hours 24
+evalmon check-alerts --threshold 0.8 --hours 24
 ```
 
 ---
@@ -127,11 +127,11 @@ simpeval check-alerts --threshold 0.8 --hours 24
 ## CLI Commands
 
 ```bash
-simpeval dashboard        # open the visual dashboard
-simpeval run-evals        # run all evals against recent calls
-simpeval run-evals --last-n 100   # evaluate last 100 calls
-simpeval stats            # print summary to terminal
-simpeval check-alerts     # check for regressions and fire alerts
+evalmon dashboard        # open the visual dashboard
+evalmon run-evals        # run all evals against recent calls
+evalmon run-evals --last-n 100   # evaluate last 100 calls
+evalmon stats            # print summary to terminal
+evalmon check-alerts     # check for regressions and fire alerts
 ```
 
 ---
@@ -146,18 +146,18 @@ ANTHROPIC_API_KEY=your_key_here
 
 # Optional
 OPENAI_API_KEY=your_key_here
-SIMPEVAL_SLACK_WEBHOOK=https://hooks.slack.com/services/...
-SIMPEVAL_ALERT_EMAIL=you@example.com
-SIMPEVAL_DB_PATH=~/.simpeval/simpeval.db
+EVALMON_SLACK_WEBHOOK=https://hooks.slack.com/services/...
+EVALMON_ALERT_EMAIL=you@example.com
+EVALMON_DB_PATH=~/.evalmon/evalmon.db
 ```
 
 Or configure in code:
 
 ```python
-simpeval.configure(
+evalmon.configure(
     enabled=True,
     judge_model="claude-haiku-4-5-20251001",
-    db_path="~/.simpeval/simpeval.db",
+    db_path="~/.evalmon/evalmon.db",
 )
 ```
 
@@ -181,7 +181,7 @@ Every call automatically captures:
 | `prompt_version` | Your version tag (optional) |
 | `user_id` | User identifier (optional) |
 
-Stored locally in SQLite at `~/.simpeval/simpeval.db`. Your data never leaves your machine.
+Stored locally in SQLite at `~/.evalmon/evalmon.db`. Your data never leaves your machine.
 
 ---
 

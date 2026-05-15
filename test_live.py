@@ -16,22 +16,22 @@ if not os.environ.get("ANTHROPIC_API_KEY"):
     print("  ANTHROPIC_API_KEY=sk-ant-your-key-here\n")
     exit(1)
 
-import simpeval
+import evalmon
 from anthropic import Anthropic
 
 # ── 1. Wrap the client ─────────────────────────────────────────────────────────
 # This is the one line change. Everything after this is normal Anthropic usage.
-client = simpeval.wrap(Anthropic())
+client = evalmon.wrap(Anthropic())
 
 print("=" * 55)
-print("  simpeval Phase 1 — Live Test")
+print("  evalmon Phase 1 — Live Test")
 print("=" * 55)
-print(f"  Logs saving to: {simpeval.get_db_path()}")
+print(f"  Logs saving to: {evalmon.get_db_path()}")
 print()
 
 # ── 2. Tag these calls with a version so you can track them ───────────────────
 # This lets you compare "v1 prompt" vs "v2 prompt" later in the dashboard
-simpeval.set_context(prompt_version="v1", user_id="phase1-test")
+evalmon.set_context(prompt_version="v1", user_id="phase1-test")
 
 # ── 3. Make 5 real API calls ───────────────────────────────────────────────────
 # These are typical customer-support style prompts.
@@ -81,7 +81,7 @@ print("-" * 55)
 print("Creating eval: 'professional_tone'")
 print()
 
-simpeval.create_eval(
+evalmon.create_eval(
     name="professional_tone",
     criterion=(
         "The response must be professional, polite, and genuinely helpful. "
@@ -96,7 +96,7 @@ simpeval.create_eval(
 print("Running eval on the 5 calls (Claude is judging each one)...")
 print()
 
-results = simpeval.run_evals(last_n=5)
+results = evalmon.run_evals(last_n=5)
 
 # ── 6. Summary ────────────────────────────────────────────────────────────────
 print()
@@ -117,5 +117,5 @@ for r in results:
 
 print()
 print("=" * 55)
-print("  Next: run  simpeval dashboard  to see this in the UI")
+print("  Next: run  evalmon dashboard  to see this in the UI")
 print("=" * 55)

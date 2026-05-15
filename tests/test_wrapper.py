@@ -1,6 +1,6 @@
 """
-Tests for the simpeval wrapper and storage layer.
-Uses a temp SQLite DB so nothing touches the real ~/.simpeval/simpeval.db.
+Tests for the evalmon wrapper and storage layer.
+Uses a temp SQLite DB so nothing touches the real ~/.evalmon/evalmon.db.
 """
 import json
 import os
@@ -10,10 +10,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import simpeval
-from simpeval import storage
-from simpeval.costs import calculate_cost
-from simpeval.wrapper import wrap
+import evalmon
+from evalmon import storage
+from evalmon.costs import calculate_cost
+from evalmon.wrapper import wrap
 
 
 @pytest.fixture(autouse=True)
@@ -145,7 +145,7 @@ def test_wrap_logs_context_metadata():
     fake_client.chat.completions.create.return_value = _mock_openai_response()
 
     wrapped = wrap(fake_client)
-    simpeval.set_context(prompt_version="v2", user_id="user_42")
+    evalmon.set_context(prompt_version="v2", user_id="user_42")
     wrapped.chat.completions.create(model="gpt-4o", messages=[])
 
     calls = storage.get_calls()
@@ -154,12 +154,12 @@ def test_wrap_logs_context_metadata():
 
 
 def test_wrap_unsupported_client():
-    with pytest.raises(TypeError, match="simpeval.wrap"):
+    with pytest.raises(TypeError, match="evalmon.wrap"):
         wrap(object())
 
 
 def test_wrap_disabled_skips_logging():
-    simpeval.configure(enabled=False)
+    evalmon.configure(enabled=False)
     fake_client = MagicMock()
     fake_client.__class__.__name__ = "OpenAI"
     fake_client.chat.completions.create.return_value = _mock_openai_response()
@@ -168,4 +168,4 @@ def test_wrap_disabled_skips_logging():
     wrapped.chat.completions.create(model="gpt-4o", messages=[])
 
     assert len(storage.get_calls()) == 0
-    simpeval.configure(enabled=True)  # restore
+    evalmon.configure(enabled=True)  # restore

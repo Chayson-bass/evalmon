@@ -1,5 +1,5 @@
 [project]
-name = "simpeval"
+name = "evalmon"
 version = "0.1.0"
 description = "Simple LLM call logging, evals, and regression alerts for indie developers"
 requires-python = ">=3.9"
@@ -15,7 +15,7 @@ openai = ["openai>=1.0.0"]
 dev = ["pytest>=8.0.0"]
 
 [project.scripts]
-simpeval = "simpeval.cli:main"
+evalmon = "evalmon.cli:main"
 
 [build-system]
 requires = ["setuptools>=68.0"]
@@ -23,4 +23,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["simpeval*"]
+include = ["evalmon*"]

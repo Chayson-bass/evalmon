@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="simpeval", description="Simple LLM monitoring")
+    parser = argparse.ArgumentParser(prog="evalmon", description="Simple LLM monitoring")
     sub = parser.add_subparsers(dest="cmd")
 
     sub.add_parser("dashboard", help="Launch the Streamlit dashboard")
@@ -40,13 +40,13 @@ def _dashboard() -> None:
 
 
 def _run_evals(args) -> None:
-    from simpeval.evals import run_evals
+    from evalmon.evals import run_evals
     print(f"Running evals on last {args.last_n} calls...")
     run_evals(last_n=args.last_n, eval_names=args.eval_names)
 
 
 def _stats() -> None:
-    from simpeval.storage import get_calls, get_eval_results
+    from evalmon.storage import get_calls, get_eval_results
     calls = get_calls(limit=10_000)
     if not calls:
         print("No calls logged yet.")
@@ -72,7 +72,7 @@ def _stats() -> None:
 
 
 def _alerts(args) -> None:
-    from simpeval.alerts import alert_on_regression
+    from evalmon.alerts import alert_on_regression
     failing = alert_on_regression(threshold=args.threshold, lookback_hours=args.hours)
     if failing:
         print(f"REGRESSION: {len(failing)} eval(s) below threshold")

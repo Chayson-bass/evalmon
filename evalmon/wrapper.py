@@ -12,11 +12,11 @@ def wrap(client: Any) -> Any:
     Wrap an OpenAI or Anthropic client to automatically log every LLM call.
 
     Usage:
-        import simpeval
+        import evalmon
         from openai import OpenAI
 
-        client = simpeval.wrap(OpenAI())          # one line — everything else stays the same
-        client = simpeval.wrap(Anthropic())
+        client = evalmon.wrap(OpenAI())          # one line — everything else stays the same
+        client = evalmon.wrap(Anthropic())
     """
     type_name = type(client).__name__
     if type_name in ("OpenAI", "AzureOpenAI"):
@@ -25,7 +25,7 @@ def wrap(client: Any) -> Any:
         return _WrappedAnthropic(client)
     else:
         raise TypeError(
-            f"simpeval.wrap() received {type_name}. "
+            f"evalmon.wrap() received {type_name}. "
             "Supported: openai.OpenAI, openai.AzureOpenAI, anthropic.Anthropic"
         )
 

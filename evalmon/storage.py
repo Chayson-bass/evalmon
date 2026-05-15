@@ -11,8 +11,8 @@ _DB_PATH: Path | None = None
 def get_db_path() -> Path:
     if _DB_PATH is not None:
         return _DB_PATH
-    env = os.environ.get("SIMPEVAL_DB_PATH")
-    return Path(env) if env else Path.home() / ".simpeval" / "simpeval.db"
+    env = os.environ.get("EVALMON_DB_PATH")
+    return Path(env) if env else Path.home() / ".evalmon/evalmon.db"
 
 
 def set_db_path(path: str | Path | None) -> None:
